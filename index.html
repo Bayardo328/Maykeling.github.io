@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>inicio</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Sumador Amigable</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .friendly-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Hero Section -->
+    <div class="hero-background text-white rounded-2xl shadow-2xl mb-8 p-8 max-w-4xl w-full text-center">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/20c3cf0e-7c00-42d3-92e3-86a1c59129ae.png" alt="Warm welcoming illustration of smiling math symbols and numbers forming a friendly introduction scene with open books, calculators depicted as friendly robots, bright colors like yellow and blue, simple cartoon style with children interacting happily" class="mx-auto mb-6 rounded-xl w-full max-w-sm" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+        <div class="hidden bg-gray-200 p-4 rounded-xl font-bold">Imagen no disponible</div>
+        <h1 class="text-5xl font-extrabold mb-4">¡Bienvenidos a Sumador Amigable!</h1>
+        <p class="text-xl mb-6">Donde las sumas se convierten en diversión y aprendizaje fácil para todos.</p>
+        <button
+          onclick="window.location.href='sumas.html'" 
+         class="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg">
+            ¡Comienza Ahora!
+        </button>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full px-4">
+        <div class="friendly-card bg-white rounded-xl shadow-lg p-6 text-center">
+            <div class="text-4xl mb-4">📚</div>
+            <h3 class="text-xl font-semibold mb-2">Aprende Sumas</h3>
+            <p class="text-gray-600">Descubre ejercicios divertidos para mejorar tus habilidades en matemáticas de manera sencilla.</p>
+        </div>
+        <div class="friendly-card bg-white rounded-xl shadow-lg p-6 text-center">
+            <div class="text-4xl mb-4">🧮</div>
+            <h3 class="text-xl font-semibold mb-2">Practica</h3>
+            <p class="text-gray-600">Únete para resolver problemas de suma interactivos y mejora paso a paso.</p>
+        </div>
+        <div class="friendly-card bg-white rounded-xl shadow-lg p-6 text-center">
+            <div class="text-4xl mb-4">🎉</div>
+            <h3 class="text-xl font-semibold mb-2">¡Diviértete!</h3>
+            <p class="text-gray-600">Aprende mientras juegas con nuestra interfaz amigable diseñada para todos los niveles.</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to make the start button interactive (alert for demo)
+        document.querySelector('button').addEventListener('click', () => {
+            alert('¡Bien hecho! Pronto podrás iniciar las sumas.');
+        });
+    </script>
+
+</body>
+</html>
+</content>
+</create_file>
+
+</body>
+
+</html>

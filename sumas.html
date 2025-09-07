@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aprendamos a Sumar</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+  /* Reset y base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    background: #e6f0f3;
+    color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    padding: 1rem 0;
+    justify-content: space-between;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #3a7ca5;
+  }
+
+  /* Contador de puntos y nivel */
+  #stats {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #4a90e2;
+    text-align: center;
+  }
+
+  main {
+    background: #ffffffcc;
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  #operacion {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #4a90e2;
+  }
+
+  input[type="number"] {
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    max-width: 150px;
+    border: 3px solid #a3d2ca;
+    border-radius: 12px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  input[type="number"]:focus {
+    border-color: #7bc4a6;
+  }
+
+  button {
+    margin-top: 1rem;
+    background-color: #f7d794;
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6b4226;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #c89f6a;
+    transition: background-color 0.3s;
+    user-select: none;
+  }
+  button:active {
+    box-shadow: none;
+    transform: translateY(4px);
+  }
+  button:hover {
+    background-color: #f9e2b3;
+  }
+
+  #mensaje {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    min-height: 2rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #mensaje.correcto {
+    color: #27ae60;
+  }
+  #mensaje.incorrecto {
+    color: #e74c3c;
+  }
+
+  /* Animación confeti */
+  .confeti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    width: 10px;
+    height: 10px;
+    background-color: #f7d794;
+    opacity: 0.9;
+    border-radius: 50%;
+    animation: caer 1.5s linear forwards;
+  }
+  @keyframes caer {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Footer (créditos) */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    color: #7f8c8d;
+    font-size: 1rem;
+  }
+  footer p {
+    margin: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    main {
+      padding: 1.5rem;
+    }
+    #operacion {
+      font-size: 2.5rem;
+    }
+    button {
+      width: 100%;
+      font-size: 1.3rem;
+      padding: 0.8rem 0;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Aprendamos a Sumar</h1>
+</header>
+
+<div id="stats">⭐ Puntos: 0 | Nivel: Facil</div>
+
+<main>
+  <div id="operacion">0 + 0</div>
+  <input type="number" id="respuesta" min="0" max="100" autocomplete="off" aria-label="Respuesta de la suma" />
+  <button id="comprobar">Comprobar</button>
+  <div id="mensaje" role="alert" aria-live="polite"></div>
+</main>
+
+<footer>
+  <p>Creado por Bayardo. Educacion infantil divertida y accesible.</p>
+</footer>
+
+<script>
+  const operacionEl = document.getElementById('operacion');
+  const respuestaEl = document.getElementById('respuesta');
+  const comprobarBtn = document.getElementById('comprobar');
+  const mensajeEl = document.getElementById('mensaje');
+  const statsEl = document.getElementById('stats');
+
+  let puntos = 0;
+  let nivel = 'Facil'; // Fácil: 0-10, Medio: 10-20, Avanzado: 20-50
+  let aciertosConsecutivos = 0;
+  let num1 = 0;
+  let num2 = 0;
+
+  const niveles = {
+    'Facil': { min: 0, max: 10, siguiente: 'Medio', objetivo: 5 },
+    'Medio': { min: 10, max: 20, siguiente: 'Avanzado', objetivo: 5 },
+    'Avanzado': { min: 20, max: 50, siguiente: null, objetivo: Infinity }
+  };
+
+  function generarOperacion() {
+    const config = niveles[nivel];
+    num1 = Math.floor(Math.random() * (config.max - config.min)) + config.min;
+    num2 = Math.floor(Math.random() * (config.max - config.min)) + config.min;
+    operacionEl.textContent = `${num1} + ${num2}`;
+    respuestaEl.value = '';
+    respuestaEl.focus();
+    mensajeEl.textContent = '';
+    mensajeEl.className = '';
+  }
+
+  function crearConfeti() {
+    const confetiCount = 30;
+    for (let i = 0; i < confetiCount; i++) {
+      const confeti = document.createElement('div');
+      confeti.classList.add('confeti');
+      confeti.style.backgroundColor = ['#f7d794', '#a3d2ca', '#f9e2b3', '#7bc4a6', '#4a90e2'][Math.floor(Math.random() * 5)];
+      confeti.style.left = Math.random() * window.innerWidth + 'px';
+      confeti.style.top = '-10px';
+      confeti.style.width = confeti.style.height = (5 + Math.random() * 10) + 'px';
+      confeti.style.animationDuration = (1 + Math.random()) + 's';
+      confeti.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(confeti);
+      setTimeout(() => confeti.remove(), 3000);
+    }
+  }
+
+  function avanzarNivel() {
+    const config = niveles[nivel];
+    if (aciertosConsecutivos >= config.objetivo && config.siguiente) {
+      nivel = config.siguiente;
+      aciertosConsecutivos = 0;
+      actualizarStats();
+      mensajeEl.innerHTML = '<i class="fas fa-trophy"></i> ¡Subiste de nivel!';
+      mensajeEl.className = 'correcto';
+      crearConfeti();
+      setTimeout(generarOperacion, 2000);
+    } else {
+      generarOperacion();
+    }
+  }
+
+  function actualizarStats() {
+    statsEl.textContent = `⭐ Puntos: ${puntos} | Nivel: ${nivel}`;
+  }
+
+  comprobarBtn.addEventListener('click', () => {
+    const respuestaUsuario = parseInt(respuestaEl.value, 10);
+    if (isNaN(respuestaUsuario)) {
+      mensajeEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Por favor, escribe un número.';
+      mensajeEl.className = 'incorrecto';
+      return;
+    }
+    if (respuestaUsuario === num1 + num2) {
+      puntos++;
+      aciertosConsecutivos++;
+      actualizarStats();
+      mensajeEl.innerHTML = '<i class="fas fa-check-circle"></i> ¡Correcto!';
+      mensajeEl.className = 'correcto';
+      crearConfeti();
+      setTimeout(avanzarNivel, 2000);
+    } else {
+      aciertosConsecutivos = 0; // Resetear consecutivos en error
+      mensajeEl.innerHTML = '<i class="fas fa-times-circle"></i> Inténtalo otra vez';
+      mensajeEl.className = 'incorrecto';
+      respuestaEl.focus();
+    }
+  });
+
+  // Generar la primera operación al cargar
+  generarOperacion();
+
+  // Permitir presionar Enter para comprobar
+  respuestaEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      comprobarBtn.click();
+    }
+  });
+</script>
+</body>
+</html>
+</content>
+</create_file>
